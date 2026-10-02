@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Model weights (published as GitHub Release assets instead)
+*.pt
+*.pth
+*.onnx
+Models/
+
+# Training data and artifacts
+Human Data/
+checkpoints/
+data/
+replay_buffer/
+SelfPlay Game PGNs/
+Arena Game PGNs/
+paths/
+saved*data*
+*.bin
+*.npz
+*.prof
+board.svg
+
+# Downloads and third-party code
+syzygy/
+*.rtbw
+*.rtbz
+stockfish/
+FastChess/
+Syzygy-Tablebase-Downloader-main/
+
+# .NET build output (csharp-engine/)
+bin/
+obj/
+
+# Editors / OS
+.vscode/
+.vs/
+.idea/
+.claude/
+Thumbs.db
+.DS_Store
