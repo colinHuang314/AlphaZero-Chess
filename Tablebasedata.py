@@ -40,6 +40,8 @@ import chess.syzygy as syzygy
 
 from Encoder import encode_board, move_to_index, IN_PLANES
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Models/, syzygy/, Human Data/ ... live next to this script
+
 
 # ─────────────────────────────────────────────────────────────────────────
 # Random legal position sampling
@@ -363,17 +365,17 @@ def concatenate_caches(prefixes: List[str], out_prefix: str, chunk_bytes: int = 
 # One directory, or a list of directories (e.g. separate WDL/DTZ folders --
 # add_directory() gets called for each one, same as mcts_core.init_tablebase).
 SYZYGY_PATH = [
-    r"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\syzygy\Syzygy345WDL",
-    r"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\syzygy\Syzygy345DTZ",
+    os.path.join(BASE_DIR, "syzygy", "Syzygy345WDL"),
+    os.path.join(BASE_DIR, "syzygy", "Syzygy345DTZ"),
 ]
 
-OUT_PREFIX = r"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Human Data\tablebase_endgames"
+OUT_PREFIX = os.path.join(BASE_DIR, "Human Data", "tablebase_endgames")
 
 # Existing human-data cache to match ratio against. Set HUMAN_CACHE_PREFIX
 # and TARGET_RATIO to auto-compute how many positions are needed; or set
 # NUM_GAMES directly instead if you'd rather just generate a fixed number
 # of games and not worry about hitting an exact ratio.
-HUMAN_CACHE_PREFIX = r"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Human Data\human_data_cache"
+HUMAN_CACHE_PREFIX = os.path.join(BASE_DIR, "Human Data", "human_data_cache")
 TARGET_RATIO = 0.15   # synthetic positions as a fraction of the combined total
 
 NUM_GAMES = None      # set an int (and leave TARGET_RATIO/HUMAN_CACHE_PREFIX unused) for game-count mode instead

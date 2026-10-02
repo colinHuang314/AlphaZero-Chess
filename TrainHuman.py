@@ -38,6 +38,8 @@ from HumanData import build_dataset_to_disk
 from Network2 import AZNetChess, init_weights
 from Encoder import IN_PLANES, ACTION_SIZE
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Models/, syzygy/, Human Data/ ... live next to this script
+
 
 class MemmapChessDataset(Dataset):
     """Wraps the files written by build_dataset_to_disk() for random-access
@@ -75,10 +77,10 @@ class MemmapChessDataset(Dataset):
         )
 
 # Data
-PGN_PATH = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Human Data\lichess_elite_2022-01.pgn"
-# CACHE_PREFIX = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Human Data\human_data_cache"          # where build_dataset_to_disk writes its files
-CACHE_PREFIX = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Human Data\tablebase_endgames_combined"
-MODEL_PREFIX = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Models\model_human_pretrained"
+PGN_PATH = os.path.join(BASE_DIR, "Human Data", "lichess_elite_2022-01.pgn")
+# CACHE_PREFIX = os.path.join(BASE_DIR, "Human Data", "human_data_cache")          # where build_dataset_to_disk writes its files
+CACHE_PREFIX = os.path.join(BASE_DIR, "Human Data", "tablebase_endgames_combined")
+MODEL_PREFIX = os.path.join(BASE_DIR, "Models", "model_human_pretrained")
 
 MAX_GAMES = 20_000 * 20                          # raise freely now -- this scales with disk space, not RAM
 MIN_ELO = None                             # e.g. 2300, only usable if the PGN has WhiteElo/BlackElo headers

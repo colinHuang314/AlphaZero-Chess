@@ -1,6 +1,9 @@
+import os
 import chess.syzygy
 
-SYZYGY_PATH = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\syzygy\Syzygy345WDL"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Models/, syzygy/, Human Data/ ... live next to this script
+
+SYZYGY_PATH = os.path.join(BASE_DIR, "syzygy", "Syzygy345WDL")
 MAX_TABLEBASE_PIECES = 5 # 3-4-5 piece only
 _tablebase = None
 

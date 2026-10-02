@@ -45,7 +45,10 @@ import torch; import torch.nn.functional as F; from torch.nn.utils import clip_g
 
 from colorama import Fore
 from datetime import datetime
-import winsound
+try:
+    import winsound  # Windows only: beep when a checkpoint is saved
+except ImportError:
+    winsound = None
 
 from Network2 import AZNetChess, init_weights
 from Encoder import IN_PLANES, ACTION_SIZE, encode_board, move_to_index
@@ -55,9 +58,11 @@ from mcts_core import (
 )
 # from Tablebase import SYZYGY_PATH, MAX_TABLEBASE_PIECES
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Models/, syzygy/, Human Data/ ... live next to this script
+
 init_tablebase([
-    fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\syzygy\Syzygy345WDL",
-    fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\syzygy\Syzygy345DTZ",
+    os.path.join(BASE_DIR, "syzygy", "Syzygy345WDL"),
+    os.path.join(BASE_DIR, "syzygy", "Syzygy345DTZ"),
 ], max_pieces=5)
 
 
@@ -119,13 +124,13 @@ BATCH_SIZE      = 256
 TRAINING_EPOCHS = 2              # effective passes over buffer per train step
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
-HUMAN_PRETRAINED_PATH = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Models\model_human_pretrained_7-7.pt"
-MODEL_DIR        = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Models"
-CURR_EPOCH_PATH  = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\paths\curr_epoch.txt"
-CHAMP_EPOCH_PATH = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\paths\champion_epoch.txt"
-SELFPLAY_PGN_DIR = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\SelfPlay Game PGNs"
-ARENA_PGN_DIR    = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Arena Game PGNs"
-EPOCH_STATS_PATH = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\paths\epoch_stats.csv"
+HUMAN_PRETRAINED_PATH = os.path.join(BASE_DIR, "Models", "model_human_pretrained_7-7.pt")
+MODEL_DIR        = os.path.join(BASE_DIR, "Models")
+CURR_EPOCH_PATH  = os.path.join(BASE_DIR, "paths", "curr_epoch.txt")
+CHAMP_EPOCH_PATH = os.path.join(BASE_DIR, "paths", "champion_epoch.txt")
+SELFPLAY_PGN_DIR = os.path.join(BASE_DIR, "SelfPlay Game PGNs")
+ARENA_PGN_DIR    = os.path.join(BASE_DIR, "Arena Game PGNs")
+EPOCH_STATS_PATH = os.path.join(BASE_DIR, "paths", "epoch_stats.csv")
 
 # ── MCTS args dicts ───────────────────────────────────────────────────────────
 # FORCED_PLAYOUT_K / TACTICAL_CHECK_MIN_PRIOR / TACTICAL_CAPTURE_MIN_PRIOR
@@ -297,9 +302,10 @@ def save_checkpoint(epoch, model, opt, replay_buffer):
     print(f"\t\t\t\t{Fore.YELLOW}\033[1mCheckpoint saved at epoch {epoch}\033[0m{Fore.RESET}")
     cleanup_old_checkpoints(epoch)
 
-    winsound.Beep(1000, 500) # sound
-    winsound.Beep(500, 500) # sound
-    winsound.Beep(1500, 500) # sound
+    if winsound:
+        winsound.Beep(1000, 500) # sound
+        winsound.Beep(500, 500) # sound
+        winsound.Beep(1500, 500) # sound
 
 
 def load_checkpoint(path, model, opt=None):

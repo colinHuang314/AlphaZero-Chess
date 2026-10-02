@@ -33,17 +33,19 @@ from mcts_core import MCTS, batch_search, init_tablebase
 from TrainHuman import CHANNELS, BLOCKS
 from Tablebase import SYZYGY_PATH, MAX_TABLEBASE_PIECES
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Models/, syzygy/, Human Data/ ... live next to this script
+
 init_tablebase([
-    fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\syzygy\Syzygy345WDL",
-    fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\syzygy\Syzygy345DTZ",
+    os.path.join(BASE_DIR, "syzygy", "Syzygy345WDL"),
+    os.path.join(BASE_DIR, "syzygy", "Syzygy345DTZ"),
 ], max_pieces=5)
 
 # ── Config ────────────────────────────────────────────────────────────────────
 # 106 was fine
-# CHECKPOINT_PATH = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Models\chess_selfplay_epoch_104.pt"
-CHECKPOINT_PATH = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Models\model_human_pretrained_7-7.pt"
+# CHECKPOINT_PATH = os.path.join(BASE_DIR, "Models", "chess_selfplay_epoch_104.pt")
+CHECKPOINT_PATH = os.path.join(BASE_DIR, "Models", "model_human_pretrained_7-7.pt")
 
-# CHECKPOINT_PATH = fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Models\chess_selfplay4_epoch_12.pt"
+# CHECKPOINT_PATH = os.path.join(BASE_DIR, "Models", "chess_selfplay4_epoch_12.pt")
 PORT     = 5000
 BOARD_PX = 720      # must be divisible by 8
 

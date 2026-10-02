@@ -22,6 +22,8 @@ To use with a GUI: point it at the built executable
   sliding attack generation for bishops/rooks/queens (classical approach —
   correct and reasonably fast; can be upgraded to magic bitboards later for
   a further speed boost).
+- **Magic.cs** — precomputed rook/bishop magic numbers and a helper,
+  not yet wired into attack generation.
 - **Board.cs** — bitboard board state, Zobrist hashing, make/unmake move with
   full undo info (castling rights, en passant, halfmove clock), null-move support.
 - **MoveGen.cs** — full legal move generation (castling, en passant, promotions),
@@ -38,21 +40,21 @@ To use with a GUI: point it at the built executable
 ## Notes / things worth improving next
 
 - **Magic bitboards** would meaningfully speed up sliding-piece attacks over
-  the current ray-scanning approach — worth doing once you want to push
-  search depth further.
+  the current ray-scanning approach. The magic numbers are already in
+  `Magic.cs`; what's left is building the lookup tables and switching
+  `Attacks` over to them.
 - **Repetition detection** (threefold) isn't implemented yet — only the
   50-move rule is checked. Add a position-history hash count for full draw
   detection.
 - **Check evasions in quiescence** aren't handled (quiescence assumes not
   in check) — a common simplification, but can cause some tactical blind
   spots when the side to move is in check at a leaf node.
-- **This code has not been compiled** in this environment (no .NET SDK
-  available here) — please run `dotnet build` first and let me know if
-  you hit any errors; I'm happy to fix them.
 
+## Sample output
 
+`dotnet run -c Release -- cli`, bot to move from the starting position:
 
-
+```
 info depth 1 score cp 56 nodes 51 time 5 pv d2d4
 info depth 2 score cp 0 nodes 211 time 7 pv d2d4
 info depth 3 score cp 50 nodes 567 time 9 pv d2d4
@@ -67,13 +69,14 @@ info depth 11 score cp 37 nodes 4612155 time 3542 pv g1f3
 info depth 12 score cp 8 nodes 18449076 time 11476 pv g1f3
 info depth 13 score cp 30 nodes 47404449 time 28044 pv g1f3
 Bot plays: g1f3
-8 r n b q k b n r 
-7 p p p p p p p p 
-6 . . . . . . . . 
-5 . . . . . . . . 
-4 . . . . . . . . 
-3 . . . . . N . . 
-2 P P P P P P P P 
-1 R N B Q K B . R 
+8 r n b q k b n r
+7 p p p p p p p p
+6 . . . . . . . .
+5 . . . . . . . .
+4 . . . . . . . .
+3 . . . . . N . .
+2 P P P P P P P P
+1 R N B Q K B . R
   a b c d e f g h
 rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1
+```

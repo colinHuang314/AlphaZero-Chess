@@ -13,6 +13,7 @@ vs epoch 130, or old-architecture vs the new redesigned network -- without
 touching the main training loop. Edit the config block below and run.
 """
 
+import os
 import time
 import random
 import chess
@@ -25,11 +26,13 @@ import Network2
 from Encoder import IN_PLANES, ACTION_SIZE, encode_board
 from mcts_core_old import MCTS, batch_search, init_tablebase
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Models/, syzygy/, Human Data/ ... live next to this script
+
 
 # ── Config ────────────────────────────────────────────────────────────────
 
-CHAMPION_PATH   = r"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Models\chess_selfplay3_epoch_6.pt"
-CHALLENGER_PATH = r"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Models\model_human_pretrained_7-7.pt"
+CHAMPION_PATH   = os.path.join(BASE_DIR, "Models", "chess_selfplay3_epoch_6.pt")
+CHALLENGER_PATH = os.path.join(BASE_DIR, "Models", "model_human_pretrained_7-7.pt")
 
 # Architecture per model -- set these separately in case champion/challenger
 # come from different network shapes (e.g. comparing the old 96x6 net
@@ -72,12 +75,12 @@ OPENING_TEMPERATURE_PLIES = 6   # ~3 moves per side; set to 0 to disable entirel
 # Set to None to disable, or a path / list of paths (e.g. separate WDL/DTZ
 # folders) to enable -- see mcts_core.init_tablebase for details.
 SYZYGY_PATH = [
-    fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\syzygy\Syzygy345WDL",
-    fr"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\syzygy\Syzygy345DTZ",
+    os.path.join(BASE_DIR, "syzygy", "Syzygy345WDL"),
+    os.path.join(BASE_DIR, "syzygy", "Syzygy345DTZ"),
 ]
 MAX_TABLEBASE_PIECES = 5
 
-OUT_PGN_PATH = r"C:\Users\colin\OneDrive\Desktop\VS Code\Projects\Chess Bot\Arena Game PGNs\arena_match.pgn"
+OUT_PGN_PATH = os.path.join(BASE_DIR, "Arena Game PGNs", "arena_match.pgn")
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

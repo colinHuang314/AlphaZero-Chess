@@ -1,6 +1,5 @@
 using ChessBot;
 // dotnet build ChessBot.csproj -c Release
-// cd "c:\Users\colin\OneDrive\Documents\Unity projects and Assets\UnityChess\NewScripts"
 // dotnet run --project ChessBot.csproj -c Release -- cli
 if (args.Length > 0 && args[0] == "cli")
 {
