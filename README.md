@@ -8,7 +8,7 @@ A chess AI following the AlphaZero approach: a PyTorch policy/value network guid
 - **Training:** supervised pretraining on 27M+ positions (elite Lichess games plus tablebase endgames), then self-play, on an RTX 4060
 - **Result:** about 1000 Elo. It plays human-like positional chess and once found a queen sacrifice leading to forced mate, but it struggles with sharp tactics, and network evaluation keeps search slow
 - **Analysis UI:** a Lichess-style board in the browser with a live eval bar, candidate-move arrows and the search's top moves
-- **Also:** a classical C# engine (`csharp-engine/`): bitboards, alpha-beta search, UCI
+- **See also:** [Minimax-Chess](https://github.com/colinHuang314/Minimax-Chess), the C# alpha-beta engine and 3D Unity game I built next
 
 ## What I debugged
 Replay buffer mis-sizing, corrupted data from max-length games, temperature-schedule bugs, and a value head that appeared to overpower the policy.

@@ -34,10 +34,6 @@ stockfish/
 FastChess/
 Syzygy-Tablebase-Downloader-main/
 
-# .NET build output (csharp-engine/)
-bin/
-obj/
-
 # Editors / OS
 .vscode/
 .vs/
